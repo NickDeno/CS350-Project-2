@@ -8,6 +8,21 @@
 #include "proc.h"
 
 int
+sys_fork_winner(void)
+{
+  int winner;
+  if(argint(0, &winner) < 0){
+      return -1;
+  } 
+  if (winner == 0 || winner == 1) {
+      fork_winner_policy = winner;
+  } else {
+      fork_winner_policy = 0;
+  }
+  return 0;
+}
+
+int
 sys_fork(void)
 {
   return fork();

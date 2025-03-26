@@ -23,6 +23,7 @@ int getpid(void);
 char* sbrk(int);
 int sleep(int);
 int uptime(void);
+void fork_winner(int winner);
 
 // ulib.c
 int stat(char*, struct stat*);

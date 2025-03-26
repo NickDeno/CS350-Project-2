@@ -17,6 +17,7 @@ static struct proc *initproc;
 int nextpid = 1;
 int sched_trace_enabled = 0; // ZYF: for OS CPU/process project
 int sched_trace_counter = 0; // ZYF: counter for print formatting
+int fork_winner_policy = 0; // 0 for parent, 1 for child
 extern void forkret(void);
 extern void trapret(void);
 
@@ -216,6 +217,10 @@ fork(void)
 
   acquire(&ptable.lock);
   np->state = RUNNABLE;
+  if (fork_winner_policy == 1) { 
+    curproc->state = RUNNABLE;
+    sched();
+  }
   release(&ptable.lock);
 
   return pid;

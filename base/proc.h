@@ -12,6 +12,7 @@ struct cpu {
 
 extern struct cpu cpus[NCPU];
 extern int ncpu;
+extern int fork_winner_policy;
 
 //PAGEBREAK: 17
 // Saved registers for kernel context switches.

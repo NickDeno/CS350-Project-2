@@ -7,6 +7,38 @@
 #include "mmu.h"
 #include "proc.h"
 
+extern int sched_policy;
+int
+sys_set_sched(void)
+{
+  int policy;
+  if(argint(0, &policy) < 0)
+    return -1;
+  if(policy != 0 && policy != 1)
+    return -1;
+  sched_policy = policy; 
+  return 0;
+}
+
+extern int tickets_owned(int pid);
+int 
+sys_tickets_owned (void){
+	int pid;
+	(argint(0, &pid));
+  return tickets_owned(pid);
+}
+
+extern int transfer_tickets(int pid, int tickets);
+int 
+sys_transfer_tickets(void){
+	int pid;
+	int tickets;
+	(argint(0, &pid));
+	(argint(1, &tickets));
+  return transfer_tickets(pid, tickets);
+}
+
+extern int fork_winner_policy;
 int
 sys_fork_winner(void)
 {

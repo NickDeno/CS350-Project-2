@@ -62,11 +62,9 @@ int transfer_tickets (int pid, int tickets){
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
     if(pid == p->pid){
         p -> tickets += tickets;
-        p -> stride = (STRIDE_TOTAL_TICKET  / p->tickets);
-        // cprintf(" stride %d \n", p -> stride);
+        p -> stride = (STRIDE_TOTAL_TICKET * 10 / p->tickets);
         curproc -> tickets -= tickets;
-        curproc -> stride = (STRIDE_TOTAL_TICKET  / curproc->tickets);
-        // cprintf(" stride %d \n", curproc -> stride);
+        curproc -> stride = (STRIDE_TOTAL_TICKET * 10  / curproc->tickets);
         release(&ptable.lock);
         return curproc -> tickets ;
 		  }
@@ -77,19 +75,16 @@ int transfer_tickets (int pid, int tickets){
 }
 
 // Counts nump rocesses
-int getNumProc(void){
+int getNumProcesses(void){
   struct proc *p;
   int count = 0;
-
   acquire(&ptable.lock);
-
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
     if(p->state == RUNNABLE || p->state == RUNNING){
        count++;
     }
   release(&ptable.lock);
   return count;
-
 }
 
 void
@@ -288,25 +283,21 @@ fork(void)
   np->state = RUNNABLE;
   release(&ptable.lock);
 
-  int proc_count = getNumProc();
+  int proc_count = getNumProcesses();
   acquire(&ptable.lock);
   struct proc *p;
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
     if(p->state == RUNNABLE || p->state == RUNNING){
       p -> tickets = ( STRIDE_TOTAL_TICKET/proc_count);
-      //  cprintf(" tickets %d \n", p ->tickets);
       if(p -> tickets != 0){
-        p -> stride = (STRIDE_TOTAL_TICKET  / p->tickets);
-        // cprintf(" tickets %d \n", p -> stride);
+        p -> stride = (STRIDE_TOTAL_TICKET * 10  / p->tickets);
         p -> pass = 0;
       } 
-
     }else{    
       p -> tickets = 0;
       p -> stride = 0;       
     }             
   }
-
   release(&ptable.lock); 
   if(fork_winner_policy == 1){
     yield();  
@@ -367,7 +358,7 @@ exit(void)
 	  if(q -> state == RUNNABLE || q -> state == RUNNING){       
       q -> tickets = (STRIDE_TOTAL_TICKET/count);
       if(q -> tickets != 0 ){
-        q -> stride = (STRIDE_TOTAL_TICKET/ q -> tickets);
+        q -> stride = (STRIDE_TOTAL_TICKET * 10/ q -> tickets);
         q -> pass = 0;  
       }
     
@@ -478,7 +469,7 @@ scheduler(void)
       swtch(&(c->scheduler), p->context);
       switchkvm();
       c -> proc = 0;
-	  
+	  //RR (Default code)
     } else{
       ran = 0;
       for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){

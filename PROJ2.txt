@@ -1,1 +1,4 @@
 Sky - Worked on the questions related to PROJ2. Reviewed the code and helped point out some changes to be made based on the information on the PROJ2 assignment pdf.
+Nicholas - Implemented transfer_tickets and tickets_owned systm call functions. Modified exit and scheduler functions to implement both RR and stride scheduling policies.
+Cole - 
+

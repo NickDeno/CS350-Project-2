@@ -1,4 +1,4 @@
 Sky - Worked on the questions related to PROJ2. Reviewed the code and helped point out some changes to be made based on the information on the PROJ2 assignment pdf.
 Nicholas - Implemented transfer_tickets and tickets_owned systm call functions. Modified exit and scheduler functions to implement both RR and stride scheduling policies.
-Cole - 
+Cole - Added extra test cases to ensure functionality of the scheduler. Can be found in schdtestextra.c. Test 7 ensures tickets can still be transfers in other processes after a process has already ended. Test 8 ensures successive transfers work and a zero ticket transfer works.
 
